@@ -1,0 +1,5 @@
+{
+  "open": "code .",
+  "prepare": "pnpm create vite . --template react-ts && pnpm install",
+  "next": "breezy-wolves-wave"
+}

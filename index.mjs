@@ -32,10 +32,12 @@ async function findDotDir() {
 
 async function readOptions(dotDir) {
   let template = "";
+  let isDir = false;
 
   for (const file of await readdir(dotDir)) {
     if (basename(file).startsWith("template")) {
       template = file;
+      isDir = (await stat(resolve(dotDir, file))).isDirectory();
       break;
     }
   }
@@ -57,6 +59,7 @@ async function readOptions(dotDir) {
   return {
     dotDir,
     template,
+    isDir,
     config,
   };
 }
@@ -109,7 +112,10 @@ async function prepare(options) {
 function execScript(cmd, options) {
   const child = spawn(cmd, {
     shell: true,
-    cwd: dirname(options.dotDir),
+    cwd: resolve(
+      dirname(options.dotDir),
+      options.isDir ? options.config.next : ""
+    ),
     stdio: "inherit",
     env: {
       ...process.env,
