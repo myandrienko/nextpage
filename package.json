@@ -1,8 +1,10 @@
 {
   "name": "nextpage",
   "version": "1.0.0",
-  "description": "Next page for your next project",
-  "bin": "index.mjs",
+  "description": "Project scratchpad",
+  "bin": {
+    "nextpage": "src/index.mjs"
+  },
   "type": "module",
   "author": "Matvei Andrienko",
   "license": "MIT",

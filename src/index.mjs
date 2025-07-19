@@ -1,75 +1,17 @@
 #!/usr/bin/env node
 
 import { spawn } from "node:child_process";
-import { cp, readdir, readFile, stat, writeFile } from "node:fs/promises";
-import { basename, dirname, extname, resolve } from "node:path";
-import { cwd, exit } from "node:process";
+import { cp } from "node:fs/promises";
+import { dirname, extname, resolve } from "node:path";
+import { exit } from "node:process";
 import { getRandomName } from "./rndname.mjs";
+import { readOptions, writeOptions } from "./options.mjs";
 
 async function main() {
-  const dotDir = await findDotDir();
-  const options = await readOptions(dotDir);
+  const options = await readOptions();
   options.config = await open(options);
   options.config = await prepare(options);
   await writeOptions(options);
-}
-
-async function findDotDir() {
-  let currentDir = cwd();
-
-  while (currentDir !== "/") {
-    const dotDir = resolve(currentDir, ".nextpage");
-
-    if ((await stat(dotDir).catch(() => null))?.isDirectory()) {
-      return dotDir;
-    }
-
-    currentDir = dirname(currentDir);
-  }
-
-  throw new Error("No .nextpage dir found");
-}
-
-async function readOptions(dotDir) {
-  let template = "";
-  let isDir = false;
-
-  for (const file of await readdir(dotDir)) {
-    if (basename(file).startsWith("template")) {
-      template = file;
-      isDir = (await stat(resolve(dotDir, file))).isDirectory();
-      break;
-    }
-  }
-
-  let config = {};
-
-  try {
-    const configStr = await readFile(resolve(dotDir, "config.json"), {
-      encoding: "utf-8",
-    }).catch(() => null);
-
-    if (typeof configStr === "string") {
-      config = JSON.parse(configStr);
-    }
-  } catch {
-    throw new Error("File .nextpage/config.json is malformed");
-  }
-
-  return {
-    dotDir,
-    template,
-    isDir,
-    config,
-  };
-}
-
-async function writeOptions(options) {
-  await writeFile(
-    resolve(options.dotDir, "./config.json"),
-    JSON.stringify(options.config, undefined, 2),
-    { encoding: "utf-8" }
-  );
 }
 
 async function open(options) {
