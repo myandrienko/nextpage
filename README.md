@@ -15,8 +15,7 @@ Install globally from npm:
 
 ```
 npm install -g nextpage
-pnpm install -g nextpage
-yarn install -g nextpage
+pnpm add -g nextpage
 ```
 
 Add a `.nextpage` subdirectory to the directory where you store your scratchpad
