@@ -5,6 +5,9 @@
   "bin": {
     "nextpage": "src/index.mjs"
   },
+  "files": [
+    "src"
+  ],
   "type": "module",
   "author": "Matvei Andrienko",
   "license": "MIT",
