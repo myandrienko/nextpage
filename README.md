@@ -3,11 +3,11 @@ couple of commands, taking the time to come up with a project name or waiting
 for packages to install can disrupt your flow.
 
 If you regularly create scratchpad projects using the same template, it's
-helpful to have an empty project ready to go.
+helpful to always have an empty project ready to go.
 
 That's what `nextpage` does: it pre-bootstraps a _spare_ project for you, so
-it's ready when you need it. You can start working while another spare project
-is bootstrapped in the background.
+it's ready when you need it. You can start working _immediately_ while another
+spare project is bootstrapped in the background.
 
 ## Gettings Started
 
@@ -36,7 +36,7 @@ directory or a file.
 The template directory must be named `template`. Template files may have an
 optional extension.
 
-## Open and Prepare Scripts
+## Scripting
 
 Add the `open` script to open your bootstrapped project immediately in your
 editor of choice. Add `config.json` to the `.nextpage` subdirectory:
@@ -69,14 +69,14 @@ Add `prepare` script to run bootstrap commands:
 }
 ```
 
-Since bootstrap commands are executed in advance, a randomly named spare project
-is always prepared in advance.
+Since bootstrap commands are executed in advance, there's always a randomly
+named spare project, already bootstrapped.
 
 ## Bootstrapping
 
 Running the `nextpage` command does two things:
 
-1. It opens the _spare_ project using the `open` script.
+1. It opens the bootstrapped project using the `open` script.
 2. It bootstraps another _spare_ project by copying the template and running the
    `prepare` script.
 
@@ -93,11 +93,11 @@ for you: one to open immediately and one spare:
 ```
 your-dir
 ├ .nextpage
-| ├ config.json
-| └ template
-| └ ...project files...
-└ stupid-banks-dance (opened as soon as ready)
-| └ ...project files...
+│ ├ config.json
+│ └ template
+│   └ ...project files...
+├ stupid-banks-dance (opened as soon as ready)
+│ └ ...project files...
 └ big-aliens-call (spare)
   └ ...project files...
 ```
