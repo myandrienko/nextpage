@@ -1,0 +1,4 @@
+{
+  "open": "code .",
+  "prepare": "rm .gitkeep && pnpm create vite . --template react-ts && pnpm install"
+}
