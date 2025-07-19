@@ -4,6 +4,7 @@ import { spawn } from "node:child_process";
 import { cp, readdir, readFile, stat, writeFile } from "node:fs/promises";
 import { basename, dirname, extname, resolve } from "node:path";
 import { cwd, exit } from "node:process";
+import { getRandomName } from "./rndname.mjs";
 
 async function main() {
   const dotDir = await findDotDir();
