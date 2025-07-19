@@ -31,7 +31,7 @@ async function findDotDir() {
 }
 
 async function readOptions(dotDir) {
-  let template = null;
+  let template = "";
 
   for (const file of await readdir(dotDir)) {
     if (basename(file).startsWith("template")) {
@@ -40,17 +40,16 @@ async function readOptions(dotDir) {
     }
   }
 
-  if (!template) {
-    throw new Error("No template found in .nextpage dir");
-  }
-
-  let config = null;
+  let config = {};
 
   try {
     const configStr = await readFile(resolve(dotDir, "config.json"), {
       encoding: "utf-8",
     }).catch(() => null);
-    config = typeof configStr === "string" ? JSON.parse(configStr) : {};
+
+    if (typeof configStr === "string") {
+      config = JSON.parse(configStr);
+    }
   } catch {
     throw new Error("File .nextpage/config.json is malformed");
   }
@@ -66,9 +65,7 @@ async function writeOptions(options) {
   await writeFile(
     resolve(options.dotDir, "./config.json"),
     JSON.stringify(options.config, undefined, 2),
-    {
-      encoding: "utf-8",
-    }
+    { encoding: "utf-8" }
   );
 }
 
@@ -93,13 +90,15 @@ async function prepare(options) {
     next: `${getRandomName()}${extname(options.template)}`,
   };
 
-  await cp(
-    resolve(options.dotDir, options.template),
-    resolve(dirname(options.dotDir), config.next),
-    { recursive: true }
-  );
+  if (options.template) {
+    await cp(
+      resolve(options.dotDir, options.template),
+      resolve(dirname(options.dotDir), config.next),
+      { recursive: true }
+    );
+  }
 
-  if (typeof config.open === "string") {
+  if (typeof config.prepare === "string") {
     console.log(`Preparing ${config.next}`);
     await execScript(config.prepare, { ...options, config });
   }
