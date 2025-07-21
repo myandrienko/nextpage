@@ -3,10 +3,10 @@
   "version": "2.0.0",
   "description": "Project scratchpad",
   "bin": {
-    "nextpage": "src/index.mts"
+    "nextpage": "dist/index.mjs"
   },
   "files": [
-    "src"
+    "dist"
   ],
   "type": "module",
   "author": "Matvei Andrienko",
