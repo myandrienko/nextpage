@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+code .
+pnpm run dev
