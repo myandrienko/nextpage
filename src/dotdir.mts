@@ -61,7 +61,7 @@ export async function init(): Promise<void> {
     recursive: true,
   });
   await Promise.all([
-    chmod(resolve(dotdirSourcePath, "open"), 755),
-    chmod(resolve(dotdirSourcePath, "prepare"), 755),
+    chmod(".nextpage/open", 0o755),
+    chmod(".nextpage/prepare", 0o755),
   ]);
 }
