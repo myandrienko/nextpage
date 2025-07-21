@@ -3,11 +3,11 @@ couple of commands, taking the time to come up with a project name or waiting
 for packages to install can disrupt your flow.
 
 If you regularly create scratchpad projects using the same template, it's
-helpful to always have an empty project ready to go.
+helpful to always have an empty project ready.
 
-That's what `nextpage` does: it pre-bootstraps a _spare_ project for you, so
-it's ready when you need it. You can start working _immediately_ while another
-spare project is bootstrapped in the background.
+That's what `nextpage` does: it prepares a _spare_ project for you, so it's
+ready when you need it. You can start working _immediately_ while another spare
+project is bootstrapped in the background.
 
 ## Gettings Started
 
@@ -18,103 +18,64 @@ npm install -g nextpage
 pnpm add -g nextpage
 ```
 
-Add a `.nextpage` subdirectory to the directory where you store your scratchpad
-projects. This directory will hold your project template, which can be either a
-directory or a file.
+Run the `nextpage` command in the directory where you store your scratchpad
+projects. This will initialize the scratchpad directory by adding the
+`.nextpage` subdirectory:
 
 ```
 .nextpage
-└ template
-  └ ...project files...
+├ template
+│ └ README.md
+├ open
+└ prepare
 ```
+
+Running the `nextpage` command again at this point will bootstrap and open your
+first project (using the default template) and prepare a spare project.
+
+You can configure how the project opens and customize the bootstrapping process
+by editing the files in the `.nextpage` subdirectory.
+
+## Configuration
+
+The `open` script is opens a prepared project. In this script, you probably want
+to launch your favorite editor or IDE. You may also want to execute additional
+commands, like launching a dev server:
+
+```sh
+#!/usr/bin/env bash
+code . # open project in vscode
+npm run dev # start dev server
+```
+
+When this script is executed, cwd is the prepared project's directory. The
+randomly generated project name is also passed to the script via the `$NEXTPAGE`
+environment variable, though you likely won't need it.
+
+The `prepare` script contains the bootstrapping steps. It is used to prepare a
+spare project. First, the `.nextpage/template` directory is used to create a new
+directory with a randomly generated name. Then, the `prepare` script is executed
+in this directory.
+
+For example, for a Node project you might want to have a template with a
+`package.json` file and install dependencies in the `prepare` script:
 
 ```
 .nextpage
-└ template.ext
+├ template
+│ └ package.json
+├ open
+└ prepare
 ```
 
-The template directory must be named `template`. Template files may have an
-optional extension.
-
-## Scripting
-
-Add the `open` script to open your bootstrapped project immediately in your
-editor of choice. Add `config.json` to the `.nextpage` subdirectory:
-
-```
-.nextpage
-├ config.json
-└ template
-  └ ...project files...
+```sh
+#!/usr/bin/env bash
+npm install
 ```
 
-In `config.json`:
+Ensure that the `open` and `prepare` files are executable; otherwise, they will
+be ignored.
 
-```json
-{
-  "open": "code $NEXTPAGE"
-}
-```
-
-The bootstrapped project's randomly generated name is passed to the script via
-the `$NEXTPAGE` environment variable. The command in the above example opens the
-project in vscode.
-
-Add `prepare` script to run bootstrap commands:
-
-```json
-{
-  "open": "code $NEXTPAGE",
-  "prepare": "npm install"
-}
-```
-
-Since bootstrap commands are executed in advance, there's always a randomly
-named spare project, already bootstrapped.
-
-## Bootstrapping
-
-Running the `nextpage` command does two things:
-
-1. It opens the bootstrapped project using the `open` script.
-2. It bootstraps another _spare_ project by copying the template and running the
-   `prepare` script.
-
-When the project template is copied, a random name is assigned to the project.
-This name is made available to the `prepare` script via the `$NEXTPAGE`
-environment variable.
-
-If the template is a file, it is copied with a random name, but its extension is
-preserved.
-
-When you run the `nextpage` command for the first time, it prepares two projects
-for you: one to open immediately and one spare:
-
-```
-your-dir
-├ .nextpage
-│ ├ config.json
-│ └ template
-│   └ ...project files...
-├ stupid-banks-dance (opened as soon as ready)
-│ └ ...project files...
-└ big-aliens-call (spare)
-  └ ...project files...
-```
-
-During subsequent runs, the spare project opens immediately and the new project
-is bootstrapped in the background.
-
-## How Scripts Are Executed
-
-When the `open` and `prepare` scripts are executed, the current working
-directory (cwd) is set to the directory containing the `.nextpage` subdirectory.
-
-If the template is a directory, then the working directory (cwd) is set to the
-spare project directory.
-
-In any case, the `$NEXTPAGE` environment variable contains the randomly
-generated name of the spare project.
-
-The `nextpage` command always looks for the closest parent directory with a
-`.nextpage` subdirectory.
+Since the bootstrapping steps are executed in advance, there's always a randomly
+named spare project prepared. Its name is stored in the `.nextpage/next` file.
+Do not edit this file manually.
