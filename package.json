@@ -6,7 +6,8 @@
     "nextpage": "dist/index.mjs"
   },
   "files": [
-    "dist"
+    "dist",
+    "examples/default"
   ],
   "type": "module",
   "author": "Matvei Andrienko",
