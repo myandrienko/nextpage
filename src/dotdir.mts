@@ -1,4 +1,4 @@
-import { cp, writeFile } from "node:fs/promises";
+import { chmod, cp, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { cwd } from "node:process";
 import {
@@ -56,7 +56,12 @@ export async function writeNext(next: string, dotdir: Dotdir): Promise<Dotdir> {
 }
 
 export async function init(): Promise<void> {
-  await cp(resolve(import.meta.dirname, "../examples/default"), ".nextpage", {
+  const dotdirSourcePath = resolve(import.meta.dirname, "../examples/default");
+  await cp(dotdirSourcePath, ".nextpage", {
     recursive: true,
   });
+  await Promise.all([
+    chmod(resolve(dotdirSourcePath, "open"), 755),
+    chmod(resolve(dotdirSourcePath, "prepare"), 755),
+  ]);
 }
