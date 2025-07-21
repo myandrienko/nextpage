@@ -48,7 +48,7 @@ type ExecuteOptions = Pick<Dotdir, "rootPath" | "next">;
 function execute(command: string, options: ExecuteOptions): Promise<void> {
   const child = spawn(command, {
     shell: true,
-    cwd: options.rootPath,
+    cwd: resolve(options.rootPath, options.next),
     stdio: "inherit",
     env: {
       ...process.env,
