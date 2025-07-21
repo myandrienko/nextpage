@@ -9,18 +9,50 @@ That's what `nextpage` does: it prepares a _spare_ project for you, so it's
 ready when you need it. You can start working _immediately_ while another spare
 project is bootstrapped in the background.
 
-## Gettings Started
+## Quick Start
+
+Run the `nextpage` to initialize the current directory:
+
+```sh
+npx @myandrienko/nextpage
+```
+
+A `.nextpage` subdirectory is created with the default configuration:
+
+```
+.nextpage
+├ template     ← project structure
+│ └ README.md
+├ open         ← launch an editor, IDE...
+└ prepare      ← install dependencies
+```
+
+Run `nextpage` again to bootstrap and open your first project:
+
+```sh
+npx @myandrienko/nextpage
+```
+
+A spare project is also created.
+
+## Slightly Slower Start
 
 Install globally from npm:
 
 ```
-npm install -g nextpage
-pnpm add -g nextpage
+npm install -g @myandrienko/nextpage
+pnpm add -g @myandrienko/nextpage
 ```
 
 Run the `nextpage` command in the directory where you store your scratchpad
-projects. This will initialize the scratchpad directory by adding the
-`.nextpage` subdirectory:
+projects:
+
+```sh
+nextpage
+```
+
+This will initialize the scratchpad directory by adding the `.nextpage`
+subdirectory:
 
 ```
 .nextpage
@@ -38,9 +70,11 @@ by editing the files in the `.nextpage` subdirectory.
 
 ## Configuration
 
-The `open` script is opens a prepared project. In this script, you probably want
-to launch your favorite editor or IDE. You may also want to execute additional
+The `open` script opens a prepared project. In this script, you probably want to
+launch your favorite editor or IDE. You may also want to execute additional
 commands, like launching a dev server:
+
+**.nextpage/open:**
 
 ```sh
 #!/usr/bin/env bash
@@ -67,6 +101,8 @@ For example, for a Node project you might want to have a template with a
 ├ open
 └ prepare
 ```
+
+**.nextpage/prepare:**
 
 ```sh
 #!/usr/bin/env bash
