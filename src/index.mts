@@ -13,9 +13,10 @@ try {
     exit(0);
   }
 
-  await open(dotdir);
-  const nextDotdir = await writeNext(pickName(), dotdir);
-  await prepare(nextDotdir);
+  await Promise.all([
+    open(dotdir),
+    writeNext(pickName(), dotdir).then((nextDotdir) => prepare(nextDotdir)),
+  ]);
 } catch (err) {
   console.error(err instanceof Error ? err.message : err);
   exit(1);
