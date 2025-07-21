@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Add your open script here, for example:
+"${EDITOR:-code}" "$NEXTPAGE/README.md"
